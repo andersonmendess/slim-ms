@@ -1,7 +1,11 @@
 {
     "name": "anderson/php-microservice",
     "require": {
-        "slim/slim": "3.8"
+        "slim/slim": "3.8",
+        "doctrine/orm": "^2.6"
+    },
+    "autoload": {
+        "psr-4": {"App\\": "./src"}
     },
     "authors": [
         {
