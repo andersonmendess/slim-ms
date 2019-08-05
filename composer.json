@@ -1,0 +1,12 @@
+{
+    "name": "anderson/php-microservice",
+    "require": {
+        "slim/slim": "3.8"
+    },
+    "authors": [
+        {
+            "name": "Anderson Mendes",
+            "email": "anderson2000ano@gmail.com"
+        }
+    ]
+}
