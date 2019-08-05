@@ -1,6 +1,9 @@
 <?php
+
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
+
+use App\Models\Entity\Book;
 
 require 'bootstrap.php';
 
@@ -8,7 +11,11 @@ require 'bootstrap.php';
  * get all books
  */
 $app->get('/book', function (Request $request, Response $response) use ($app) {
-    $return = $response->withJson(['msg' => 'books list'], 200);
+    $entityManager = $this->get('em');
+    $booksRepository = $entityManager->getRepository('App\Models\Entity\Book');
+    $books = $booksRepository->findAll();
+
+    $return = $response->withJson($books, 200);
     return $return;
 });
 
@@ -18,8 +25,12 @@ $app->get('/book', function (Request $request, Response $response) use ($app) {
 $app->get('/book/{id}', function (Request $request, Response $response) use ($app) {
     $route = $request->getAttribute('route');
     $id = $route->getArgument('id');    
-    
-    $return = $response->withJson(['msg' => "Details about book {$id}"], 200)
+
+    $entityManager = $this->get('em');
+    $booksRepository = $entityManager->getRepository('App\Models\Entity\Book');
+    $book = $booksRepository->find($id);     
+
+    $return = $response->withJson($book, 200)
         ->withHeader('Content-type', 'application/json');
     return $return;
 });
@@ -28,6 +39,17 @@ $app->get('/book/{id}', function (Request $request, Response $response) use ($ap
  * create a new book
  */
 $app->post('/book', function (Request $request, Response $response) use ($app) {
+
+    $params = (object) $request->getParams();
+
+    $entityManager = $this->get('em');
+
+    $book = (new Book())->setName($params->name)
+        ->setAuthor($params->author);
+
+    $entityManager->persist($book);
+    $entityManager->flush();
+
     $return = $response->withJson(['msg' => "Creating a new book"], 201)
         ->withHeader('Content-type', 'application/json');
     return $return;
@@ -40,7 +62,17 @@ $app->put('/book/{id}', function (Request $request, Response $response) use ($ap
     $route = $request->getAttribute('route');
     $id = $route->getArgument('id');    
 
-    $return = $response->withJson(['msg' => "Updating the book {$id}"], 200)
+    $entityManager = $this->get('em');
+    $booksRepository = $entityManager->getRepository('App\Models\Entity\Book');
+    $book = $booksRepository->find($id);   
+
+    $book->setName($request->getParam('name'))
+        ->setAuthor($request->getParam('author'));
+
+    $entityManager->persist($book);
+    $entityManager->flush();   
+
+    $return = $response->withJson($book, 200)
         ->withHeader('Content-type', 'application/json');
     return $return;
 });
@@ -51,8 +83,15 @@ $app->put('/book/{id}', function (Request $request, Response $response) use ($ap
 $app->delete('/book/{id}', function (Request $request, Response $response) use ($app) {
     $route = $request->getAttribute('route');
     $id = $route->getArgument('id');    
+
+    $entityManager = $this->get('em');
+    $booksRepository = $entityManager->getRepository('App\Models\Entity\Book');
+    $book = $booksRepository->find($id);
+
+    $entityManager->remove($book);
+    $entityManager->flush(); 
     
-    $return = $response->withJson(['msg' => "Deleting the book {$id}"], 204)
+    $return = $response->withJson([], 204)
         ->withHeader('Content-type', 'application/json');
     return $return;
 });
