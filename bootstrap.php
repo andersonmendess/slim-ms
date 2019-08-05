@@ -7,7 +7,13 @@ require './vendor/autoload.php';
 use Doctrine\ORM\Tools\Setup;
 use Doctrine\ORM\EntityManager;
 
-$container = new \Slim\Container();
+$configs = [
+    'settings' => [
+        'displayErrorDetails' => true,
+    ],
+];
+
+$container = new \Slim\Container($configs);
 
 // setup models Entity path;
 $models = Setup::createAnnotationMetadataConfiguration(array(__DIR__."/src/Models/Entity"), $isDevMode);
