@@ -28,7 +28,11 @@ $app->get('/book/{id}', function (Request $request, Response $response) use ($ap
 
     $entityManager = $this->get('em');
     $booksRepository = $entityManager->getRepository('App\Models\Entity\Book');
-    $book = $booksRepository->find($id);     
+    $book = $booksRepository->find($id);
+
+    if (!$book) {
+        throw new \Exception("Book not Found", 404);
+    }
 
     $return = $response->withJson($book, 200)
         ->withHeader('Content-type', 'application/json');
@@ -64,7 +68,11 @@ $app->put('/book/{id}', function (Request $request, Response $response) use ($ap
 
     $entityManager = $this->get('em');
     $booksRepository = $entityManager->getRepository('App\Models\Entity\Book');
-    $book = $booksRepository->find($id);   
+    $book = $booksRepository->find($id);
+
+    if (!$book) {
+        throw new \Exception("Book not Found", 404);
+    }
 
     $book->setName($request->getParam('name'))
         ->setAuthor($request->getParam('author'));
@@ -87,6 +95,10 @@ $app->delete('/book/{id}', function (Request $request, Response $response) use (
     $entityManager = $this->get('em');
     $booksRepository = $entityManager->getRepository('App\Models\Entity\Book');
     $book = $booksRepository->find($id);
+
+    if (!$book) {
+        throw new \Exception("Book not Found", 404);
+    }
 
     $entityManager->remove($book);
     $entityManager->flush(); 
