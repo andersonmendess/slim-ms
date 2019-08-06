@@ -44,6 +44,7 @@ class ComposerStaticInit20a408cb8d576be1b52dcff3a4ea6325
         ),
         'F' => 
         array (
+            'Firebase\\JWT\\' => 13,
             'FastRoute\\' => 10,
         ),
         'D' => 
@@ -69,6 +70,7 @@ class ComposerStaticInit20a408cb8d576be1b52dcff3a4ea6325
         array (
             0 => __DIR__ . '/..' . '/tuupola/callable-handler/src',
             1 => __DIR__ . '/..' . '/tuupola/slim-basic-auth/src',
+            2 => __DIR__ . '/..' . '/tuupola/slim-jwt-auth/src',
         ),
         'Tuupola\\Http\\Factory\\' => 
         array (
@@ -123,6 +125,10 @@ class ComposerStaticInit20a408cb8d576be1b52dcff3a4ea6325
         'Interop\\Container\\' => 
         array (
             0 => __DIR__ . '/..' . '/container-interop/container-interop/src/Interop/Container',
+        ),
+        'Firebase\\JWT\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/firebase/php-jwt/src',
         ),
         'FastRoute\\' => 
         array (

@@ -77,13 +77,18 @@ $container['notFoundHandler'] = function ($container) {
     };
 };
 
+// secret key for jwt
+$container['secretkey'] = "hereisthesecret";
+
 $app = new \Slim\App($container);
+
+
+// Midllewares
 
 $app->add(new TrailingSlash(false));
 
-
 /**
- * Auth básica HTTP
+ * Auth HTTP basic
  */
 $app->add(new Tuupola\Middleware\HttpBasicAuthentication([
     /**
@@ -100,4 +105,16 @@ $app->add(new Tuupola\Middleware\HttpBasicAuthentication([
      * Whitelist - Protege todas as rotas e só libera as de dentro do array
      */
     //"passthrough" => ["/auth/liberada", "/admin/ping"],
+]));
+
+/**
+ * Basic JWT Auth
+ */
+$app->add(new Tuupola\Middleware\JwtAuthentication([
+    "regexp" => "/(.*)/",
+    "header" => "X-Token",
+    "path" => "/book",
+    "passthrough" => ["/auth"],
+    "realm" => "Protected", 
+    "secret" => $container['secretkey']
 ]));

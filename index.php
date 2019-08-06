@@ -5,14 +5,29 @@ use \Psr\Http\Message\ResponseInterface as Response;
 
 use App\Models\Entity\Book;
 
+use Firebase\JWT\JWT;
+
+
 require 'bootstrap.php';
 
 /**
  * return jwt if authenticated
  */
 $app->get('/auth', function (Request $request, Response $response) use ($app) {
-    return $response->withJson(["status" => "Autenticado!"], 200)
+
+    $key = $this->get("secretkey");
+
+    $token = array(
+        "user" => "@fidelissauro",
+        "twitter" => "https://twitter.com/fidelissauro",
+        "github" => "https://github.com/msfidelis"
+    );
+
+    $jwt = JWT::encode($token, $key);
+    
+    return $response->withJson(["jwt-token" => $jwt], 200)
         ->withHeader('Content-type', 'application/json');   
+
 });
 
 /**
@@ -124,6 +139,5 @@ $app->delete('/book/{id}', function (Request $request, Response $response) use (
         ->withHeader('Content-type', 'application/json');
     return $return;
 });
-
 
 $app->run();
