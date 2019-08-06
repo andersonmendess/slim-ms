@@ -8,6 +8,14 @@ use App\Models\Entity\Book;
 require 'bootstrap.php';
 
 /**
+ * return jwt if authenticated
+ */
+$app->get('/auth', function (Request $request, Response $response) use ($app) {
+    return $response->withJson(["status" => "Autenticado!"], 200)
+        ->withHeader('Content-type', 'application/json');   
+});
+
+/**
  * get all books
  */
 $app->get('/book', function (Request $request, Response $response) use ($app) {
@@ -53,7 +61,6 @@ $app->post('/book', function (Request $request, Response $response) use ($app) {
 
     $entityManager->persist($book);
     $entityManager->flush();
-
 
     $logger = $this->get('logger');
     $logger->info('Book Created!', $book->getValues());
@@ -109,7 +116,6 @@ $app->delete('/book/{id}', function (Request $request, Response $response) use (
 
     $entityManager->remove($book);
     $entityManager->flush(); 
-
 
     $logger = $this->get('logger');
     $logger->info('Book Deleted!', $book->getValues());
