@@ -54,6 +54,10 @@ $app->post('/book', function (Request $request, Response $response) use ($app) {
     $entityManager->persist($book);
     $entityManager->flush();
 
+
+    $logger = $this->get('logger');
+    $logger->info('Book Created!', $book->getValues());
+
     $return = $response->withJson(['msg' => "Creating a new book"], 201)
         ->withHeader('Content-type', 'application/json');
     return $return;
@@ -80,6 +84,9 @@ $app->put('/book/{id}', function (Request $request, Response $response) use ($ap
     $entityManager->persist($book);
     $entityManager->flush();   
 
+    $logger = $this->get('logger');
+    $logger->info('Book Edited!', $book->getValues());
+
     $return = $response->withJson($book, 200)
         ->withHeader('Content-type', 'application/json');
     return $return;
@@ -102,6 +109,10 @@ $app->delete('/book/{id}', function (Request $request, Response $response) use (
 
     $entityManager->remove($book);
     $entityManager->flush(); 
+
+
+    $logger = $this->get('logger');
+    $logger->info('Book Deleted!', $book->getValues());
     
     $return = $response->withJson([], 204)
         ->withHeader('Content-type', 'application/json');

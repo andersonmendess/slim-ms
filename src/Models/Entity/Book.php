@@ -54,9 +54,13 @@ class Book {
         if (!$author && !is_string($author)) {
             throw new \InvalidArgumentException("Author is required", 400);
         }
-        
+
         $this->author = $author;
         return $this;
+    }
+
+    public function getValues() {
+        return get_object_vars($this);
     }
 
 }
