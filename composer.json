@@ -1,0 +1,10 @@
+{
+    "name": "anderson/php_ms_sample_v2",
+    "authors": [
+        {
+            "name": "Anderson Mendes",
+            "email": "anderson2000ano@gmail.com"
+        }
+    ],
+    "require": {}
+}
