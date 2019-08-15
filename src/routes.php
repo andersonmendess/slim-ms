@@ -3,12 +3,17 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
 $app->get('/', function (Request $request, Response $response) {
-    
-    $data = array('name' => 'Rob', 'age' => 40);
-    $payload = json_encode($data);
 
-    $response->getBody()->write($payload);
-    return $response
-          ->withHeader('Content-Type', 'application/json')
-          ->withStatus(201);
+    $response->getBody()->write('Hello World');
+    return $response;
+});
+
+
+$app->group('/v1', function($gp){
+
+    $gp->get('/users', '\App\v1\Controllers\UserController:listUser');
+
+    $gp->post('/users', '\App\v1\Controllers\UserController:createUser');
+
+
 });
