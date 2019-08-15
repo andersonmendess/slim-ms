@@ -5,13 +5,12 @@ use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
 
 use App\Models\Entity\User;
-use Psr\Container\ContainerInterface;
 
 class UserController {
 
     protected $container;
 
-    public function __construct(ContainerInterface $container) {
+    public function __construct($container) {
         $this->container = $container;
     }
 
@@ -28,16 +27,12 @@ class UserController {
 
     }
 
-    public function createUser($req, $res, $args){
+    public function createUser($req, $res){
 
-        var_dump($req->getHeaderLine());die();
+        $entityManager = $this->container->get('em');
 
-        $entityManager = $this->get('em');
-
-        $user = (new User())
-                    ->setName($params->name)
-                    ->setEmail($params->email)
-                    ->setPassword($params->password);
+        $user =new User();
+        $user->fromArr($req->getParams());
 
         $entityManager->persist($user);
         $entityManager->flush();

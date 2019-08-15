@@ -44,7 +44,7 @@ class User {
         return $this->email;
     }
 
-    public function getpasword(){
+    public function getPassword(){
         return $this->password;
     }
 
@@ -57,7 +57,13 @@ class User {
         $this->email = $email;
     }
 
-    public function setpasword($password){
+    public function setPassword($password){
         $this->password = $password;
+    }
+
+    public function fromArr($arr) {
+        $this->name = $arr['name'];
+        $this->email = $arr['email'];
+        $this->password = $arr['password'];
     }
 }
