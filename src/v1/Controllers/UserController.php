@@ -14,21 +14,28 @@ class UserController {
         $this->container = $container;
     }
 
-    public function listUser($req, $res){
+    public function list($req, $res){
         $entityManager = $this->container->get('em');
+
         $userRepository = $entityManager->getRepository('App\Models\Entity\User');
         $users = $userRepository->findAll();
 
-        $res->getBody()->write(json_encode($users));
-        
-        return $res
-                ->withHeader('Content-Type', 'application/json')
-                ->withStatus(200);
-
+        return $res->withJson($users, 200)->withHeader('Content-Type', 'application/json');
     }
 
-    public function createUser($req, $res){
+    public function show($req, $res) {
+        $entityManager = $this->container->get('em');
 
+        $id = $req->getAttribute('route')->getArgument('id');
+
+        $userRepository = $entityManager->getRepository('App\Models\Entity\User');
+        $user = $userRepository->find($id);
+
+        return $res->withJson($user, 200)->withHeader('Content-Type', 'application/json');
+    }
+
+
+    public function create($req, $res) {
         $entityManager = $this->container->get('em');
 
         $user =new User();
@@ -37,10 +44,38 @@ class UserController {
         $entityManager->persist($user);
         $entityManager->flush();
 
-        $res->getBody()->write(json_encode($user));
-        
-        return $res
-                ->withHeader('Content-Type', 'application/json')
-                ->withStatus(201);
+        return $res->withJson($user, 201)->withHeader('Content-Type', 'application/json');
+
     }
+
+    public function edit($req, $res){
+        $entityManager = $this->container->get('em');
+
+        $id = $req->getAttribute('route')->getArgument('id');
+
+        $userRepository = $entityManager->getRepository('App\Models\Entity\User');
+        $user = $userRepository->find($id);
+        $user->fromArr($req->getParams());
+
+        $entityManager->persist($user);
+        $entityManager->flush();
+
+        return $res->withJson($user, 201)->withHeader('Content-Type', 'application/json');
+    }
+
+    public function delete($req, $res){
+        $entityManager = $this->container->get('em');
+
+        $id = $req->getAttribute('route')->getArgument('id');
+
+        $userRepository = $entityManager->getRepository('App\Models\Entity\User');
+        $user = $userRepository->find($id);
+        
+        $entityManager->remove($user);
+        $entityManager->flush(); 
+
+        return $res->withJson([], 200)->withHeader('Content-Type', 'application/json');
+    }
+
+
 }
