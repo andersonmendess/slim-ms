@@ -31,6 +31,10 @@ class UserController {
         $userRepository = $entityManager->getRepository('App\Models\Entity\User');
         $user = $userRepository->find($id);
 
+        if (!$user) {
+            throw new \Exception("User not Found", 404);
+        }
+
         return $res->withJson($user, 200)->withHeader('Content-Type', 'application/json');
     }
 
@@ -38,7 +42,7 @@ class UserController {
     public function create($req, $res) {
         $entityManager = $this->container->get('em');
 
-        $user =new User();
+        $user = new User();
         $user->fromArr($req->getParams());
 
         $entityManager->persist($user);
@@ -55,6 +59,11 @@ class UserController {
 
         $userRepository = $entityManager->getRepository('App\Models\Entity\User');
         $user = $userRepository->find($id);
+
+        if (!$user) {
+            throw new \Exception("User not Found", 404);
+        }
+
         $user->fromArr($req->getParams());
 
         $entityManager->persist($user);
@@ -70,6 +79,10 @@ class UserController {
 
         $userRepository = $entityManager->getRepository('App\Models\Entity\User');
         $user = $userRepository->find($id);
+
+        if (!$user) {
+            throw new \Exception("User not Found", 404);
+        }
         
         $entityManager->remove($user);
         $entityManager->flush(); 

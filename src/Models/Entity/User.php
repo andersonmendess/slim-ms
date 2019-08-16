@@ -49,21 +49,33 @@ class User {
     }
 
     public function setName($name){
+        if (!$name && !is_string($name) || empty($name)) {
+            throw new \Exception("Name is required", 400);
+        }
+
         $this->name = $name;
         return $this;
     }
 
     public function setEmail($email){
+        if (!$email && !is_string($email) || empty($email)) {
+            throw new \Exception("Email is required", 404);
+        }
+
         $this->email = $email;
     }
 
     public function setPassword($password){
+        if (!$password && !is_string($password) || empty($password)) {
+            throw new \Exception("Password is required", 404);
+        }
+
         $this->password = $password;
     }
 
     public function fromArr($arr) {
-        $this->name = $arr['name'];
-        $this->email = $arr['email'];
-        $this->password = $arr['password'];
+        $this->setName($arr['name']);
+        $this->setEmail($arr['email']);
+        $this->setPassword($arr['password']);
     }
 }
