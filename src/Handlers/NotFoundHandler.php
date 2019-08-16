@@ -12,11 +12,6 @@ class NotFoundHandler {
     public function __invoke($request, $response) {
 
        return $this->container['response']
-            ->withStatus(404)
-            ->withHeader('Content-Type', 'Application/json')
-            ->withJson([
-                'message' => 'Not found 404',
-                'status' => 404
-                ]);
+            ->withJson(['message' => 'Not found 404', 'status' => 404], 404);
     }
 }

@@ -14,7 +14,6 @@ class ExceptionHandler {
       $statusCode = $exception->getCode() ? $exception->getCode() : 500;
 
       return $this->container['response']->withStatus($statusCode)
-          ->withHeader('Content-Type', 'Application/json')
           ->withJson([
               "message" => $exception->getMessage(),
               "status" => $statusCode

@@ -20,7 +20,7 @@ class UserController {
         $userRepository = $entityManager->getRepository('App\Models\Entity\User');
         $users = $userRepository->findAll();
 
-        return $res->withJson($users, 200)->withHeader('Content-Type', 'application/json');
+        return $res->withJson($users, 200);
     }
 
     public function show($req, $res) {
@@ -35,7 +35,7 @@ class UserController {
             throw new \Exception("User not Found", 404);
         }
 
-        return $res->withJson($user, 200)->withHeader('Content-Type', 'application/json');
+        return $res->withJson($user, 200);
     }
 
 
@@ -48,7 +48,7 @@ class UserController {
         $entityManager->persist($user);
         $entityManager->flush();
 
-        return $res->withJson($user, 201)->withHeader('Content-Type', 'application/json');
+        return $res->withJson($user, 201);
 
     }
 
@@ -69,7 +69,7 @@ class UserController {
         $entityManager->persist($user);
         $entityManager->flush();
 
-        return $res->withJson($user, 201)->withHeader('Content-Type', 'application/json');
+        return $res->withJson($user, 201);
     }
 
     public function delete($req, $res){
@@ -87,7 +87,7 @@ class UserController {
         $entityManager->remove($user);
         $entityManager->flush(); 
 
-        return $res->withJson([], 200)->withHeader('Content-Type', 'application/json');
+        return $res->withJson([], 200);
     }
 
 
