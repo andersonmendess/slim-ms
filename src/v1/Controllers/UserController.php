@@ -43,7 +43,7 @@ class UserController {
         $entityManager = $this->container->get('em');
 
         $user = new User();
-        $user->fromArr($req->getParams());
+        $user->fromArr($req->getParsedBody());
 
         $entityManager->persist($user);
         $entityManager->flush();
@@ -64,7 +64,7 @@ class UserController {
             throw new \Exception("User not Found", 404);
         }
 
-        $user->fromArr($req->getParams());
+        $user->fromArr($req->getParsedBody());
 
         $entityManager->persist($user);
         $entityManager->flush();
